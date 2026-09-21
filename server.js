@@ -1,10 +1,11 @@
 const express = require("express");
+const path = require("path");
 const bcrypt = require("bcryptjs");
 const db = require("./database");
 
 const app = express();
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // ==========================================
 // MIDDLEWARE
@@ -12,15 +13,16 @@ const PORT = 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname));
 
 // ==========================================
 // HOME
 // ==========================================
 
 app.get("/", (req, res) => {
-  res.send("AL-QUWWA HOME MARKETPLACE server is running.");
+  res.sendFile(path.join(__dirname, "index.html"));
 });
+
+app.use(express.static(__dirname));
 
 // ==========================================
 // USER REGISTRATION
