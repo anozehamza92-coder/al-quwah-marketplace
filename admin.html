@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>AL-QUWAH HOME MARKETPLACE - Admin</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #f5f7fa;
+        color: #222;
+      }
+
+      header {
+        background: #111827;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 30px auto;
+        padding: 20px;
+      }
+
+      .admin-card {
+        background: white;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      }
+
+      .admin-card h2 {
+        margin-top: 0;
+      }
+
+      .professional-info {
+        line-height: 1.7;
+      }
+
+      .admin-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      button {
+        border: none;
+        padding: 10px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .approve-btn {
+        background: #15803d;
+        color: white;
+      }
+
+      .reject-btn {
+        background: #dc2626;
+        color: white;
+      }
+
+      .empty-message {
+        text-align: center;
+        padding: 30px;
+        color: #666;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>AL-QUWAH HOME MARKETPLACE</h1>
+      <p>Admin Professional Management</p>
+    </header>
+
+    <main>
+      <!-- ADMIN STATISTICS -->
+      <div class="admin-card">
+        <h2>Dashboard Statistics</h2>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+          "
+        >
+          <div class="admin-card">
+            <h3>Total Users</h3>
+            <p id="totalUsers" style="font-size: 30px; font-weight: bold">0</p>
+          </div>
+
+          <div class="admin-card">
+            <h3>Total Assets</h3>
+            <p id="totalAssets" style="font-size: 30px; font-weight: bold">0</p>
+          </div>
+
+          <div class="admin-card">
+            <h3>Approved Assets</h3>
+            <p id="approvedAssets" style="font-size: 30px; font-weight: bold">
+              0
+            </p>
+          </div>
+
+          <div class="admin-card">
+            <h3>Pending Assets</h3>
+            <p id="pendingAssets" style="font-size: 30px; font-weight: bold">
+              0
+            </p>
+          </div>
+
+          <div class="admin-card">
+            <h3>Total Professionals</h3>
+            <p
+              id="totalProfessionals"
+              style="font-size: 30px; font-weight: bold"
+            >
+              0
+            </p>
+          </div>
+
+          <div class="admin-card">
+            <h3>Verified Professionals</h3>
+            <p
+              id="verifiedProfessionals"
+              style="font-size: 30px; font-weight: bold"
+            >
+              0
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ASSET APPLICATIONS -->
+      <div class="admin-card">
+        <h2>Asset Applications</h2>
+
+        <div id="assetApplications">
+          <p class="empty-message">Loading asset applications...</p>
+        </div>
+      </div>
+
+      <!-- PROFESSIONAL APPLICATIONS -->
+      <div class="admin-card">
+        <h2>Professional Applications</h2>
+
+        <div id="professionalApplications">
+          <p class="empty-message">Loading professional applications...</p>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // ==========================================
+      // LOAD ADMIN STATISTICS
+      // ==========================================
+
+      async function loadAdminStats() {
+        try {
+          const response = await fetch("/api/admin/stats");
+          const data = await response.json();
+
+          if (!data.success) {
+            console.error("Failed to load admin statistics");
+            return;
+          }
+
+          const stats = data.stats;
+
+          document.getElementById("totalUsers").textContent = stats.totalUsers;
+
+          document.getElementById("totalAssets").textContent =
+            stats.totalAssets;
+
+          document.getElementById("approvedAssets").textContent =
+            stats.approvedAssets;
+
+          document.getElementById("pendingAssets").textContent =
+            stats.pendingAssets;
+
+          document.getElementById("totalProfessionals").textContent =
+            stats.totalProfessionals;
+
+          document.getElementById("verifiedProfessionals").textContent =
+            stats.verifiedProfessionals;
+        } catch (error) {
+          console.error("Admin statistics error:", error);
+        }
+      }
+      // ==========================================
+      // LOAD PROFESSIONAL APPLICATIONS
+      // ==========================================
+
+      async function loadProfessionalApplications() {
+        const container = document.getElementById("professionalApplications");
+
+        try {
+          console.log("Loading admin professionals...");
+
+          const response = await fetch("/api/admin/professionals");
+
+          console.log("Professional response status:", response.status);
+
+          const data = await response.json();
+
+          console.log("Professional data:", data);
+
+          if (!data.success) {
+            container.innerHTML =
+              "<p>Unable to load professional applications.</p>";
+
+            return;
+          }
+
+          const professionals = data.professionals;
+
+          if (professionals.length === 0) {
+            container.innerHTML = `
+            <p class="empty-message">
+              No professional applications found.
+            </p>
+          `;
+
+            return;
+          }
+
+          container.innerHTML = "";
+
+          professionals.forEach((professional) => {
+            const card = document.createElement("div");
+
+            card.className = "admin-card";
+
+            card.innerHTML = `
+              <h2>${professional.name || ""}</h2>
+
+              <div class="professional-info">
+                <p><strong>Service:</strong> ${professional.type || ""}</p>
+                <p><strong>Location:</strong> ${professional.location || ""}</p>
+                <p><strong>Phone:</strong> ${professional.phone || ""}</p>
+                <p><strong>Email:</strong> ${professional.email || ""}</p>
+                <p><strong>Description:</strong> ${professional.description || ""}</p>
+                <p>
+                 <strong>Status:</strong>
+                 ${professional.verified ? "Verified" : "Pending Approval"}
+                </p>
+              </div>
+
+            ${
+              professional.verified
+                ? `<p>✓ This professional is already verified.</p>`
+                : `
+                    <div class="admin-buttons">
+                    <button
+                        class="approve-btn"
+                        onclick="approveProfessional(${professional.id})"
+                    >
+                        ✓ Approve
+                    </button>
+
+                    <button
+                        class="reject-btn"
+                        onclick="rejectProfessional(${professional.id})"
+                    >
+                        ✕ Reject
+                    </button>
+                    </div>
+                `
+            }
+            `;
+
+            container.appendChild(card);
+          });
+        } catch (error) {
+          console.error("Admin professional loading error:", error);
+
+          container.innerHTML = `
+          <p>
+            Unable to connect to the marketplace server.
+          </p>
+        `;
+        }
+      }
+
+      // ==========================================
+      // APPROVE PROFESSIONAL
+      // ==========================================
+
+      async function approveProfessional(id) {
+        const confirmed = confirm("Approve this professional?");
+
+        if (!confirmed) return;
+
+        try {
+          const response = await fetch(`/api/professionals/${id}/approve`, {
+            method: "PUT",
+          });
+
+          const result = await response.json();
+
+          alert(result.message || "Professional approved.");
+
+          loadProfessionalApplications();
+          loadAdminStats();
+        } catch (error) {
+          console.error("Professional approval error:", error);
+
+          alert("Unable to approve professional.");
+        }
+      }
+
+      // ==========================================
+      // REJECT PROFESSIONAL
+      // ==========================================
+
+      async function rejectProfessional(id) {
+        const confirmed = confirm("Reject this professional application?");
+
+        if (!confirmed) return;
+
+        try {
+          const response = await fetch(`/api/professionals/${id}`, {
+            method: "DELETE",
+          });
+
+          const result = await response.json();
+
+          alert(result.message || "Professional application rejected.");
+
+          loadProfessionalApplications();
+          loadAdminStats();
+        } catch (error) {
+          console.error("Professional rejection error:", error);
+
+          alert("Unable to reject professional.");
+        }
+      }
+      // ==========================================
+      // LOAD ASSET APPLICATIONS
+      // ==========================================
+
+      async function loadAssetApplications() {
+        const container = document.getElementById("assetApplications");
+
+        try {
+          const response = await fetch("/api/admin/assets");
+          const data = await response.json();
+
+          if (!data.success) {
+            container.innerHTML =
+              "<p class='empty-message'>Unable to load asset applications.</p>";
+            return;
+          }
+
+          const assets = data.assets;
+
+          if (assets.length === 0) {
+            container.innerHTML = `
+        <p class="empty-message">
+          No asset applications found.
+        </p>
+      `;
+            return;
+          }
+
+          container.innerHTML = "";
+
+          assets.forEach((asset) => {
+            const card = document.createElement("div");
+
+            card.className = "admin-card";
+
+            card.innerHTML = `
+        <h2>${asset.name || ""}</h2>
+
+        <div class="professional-info">
+
+          <p>
+            <strong>Asset Type:</strong>
+            ${asset.type || ""}
+          </p>
+
+          <p>
+            <strong>Status:</strong>
+            ${asset.status || ""}
+          </p>
+
+          <p>
+            <strong>Location:</strong>
+            ${asset.location || ""}
+          </p>
+
+          <p>
+            <strong>Price:</strong>
+            ${asset.price || ""}
+          </p>
+
+          <p>
+            <strong>Contact:</strong>
+            ${asset.contact || ""}
+          </p>
+
+          <p>
+            <strong>Description:</strong>
+            ${asset.description || ""}
+          </p>
+
+          <p>
+            <strong>Seller:</strong>
+            ${asset.seller_name || "Unknown"}
+          </p>
+
+          <p>
+            <strong>Seller Email:</strong>
+            ${asset.seller_email || "Not provided"}
+          </p>
+
+          <p>
+            <strong>Approval:</strong>
+            ${asset.approved ? "✓ Approved" : "⏳ Pending Approval"}
+          </p>
+
+        </div>
+
+        ${
+          asset.image
+            ? `
+              <p>
+                <strong>Asset Image:</strong>
+              </p>
+              <img
+                src="${asset.image}"
+                alt="${asset.name || "Asset"}"
+                style="
+                  max-width: 300px;
+                  width: 100%;
+                  border-radius: 8px;
+                  margin-top: 5px;
+                "
+              >
+            `
+            : ""
+        }
+
+        ${
+          asset.approved
+            ? `
+              <div class="admin-buttons">
+                <button
+                  class="reject-btn"
+                  onclick="rejectAsset(${asset.id})"
+                >
+                  ✕ Remove
+                </button>
+              </div>
+            `
+            : `
+              <div class="admin-buttons">
+
+                <button
+                  class="approve-btn"
+                  onclick="approveAsset(${asset.id})"
+                >
+                  ✓ Approve
+                </button>
+
+                <button
+                  class="reject-btn"
+                  onclick="rejectAsset(${asset.id})"
+                >
+                  ✕ Reject
+                </button>
+
+              </div>
+            `
+        }
+      `;
+
+            container.appendChild(card);
+          });
+        } catch (error) {
+          console.error("Admin asset loading error:", error);
+
+          container.innerHTML = `
+      <p class="empty-message">
+        Unable to connect to the marketplace server.
+      </p>
+    `;
+        }
+      }
+
+      // ==========================================
+      // APPROVE ASSET
+      // ==========================================
+
+      async function approveAsset(id) {
+        const confirmed = confirm("Approve this asset listing?");
+
+        if (!confirmed) return;
+
+        try {
+          const response = await fetch(`/api/assets/${id}/approve`, {
+            method: "PUT",
+          });
+
+          const result = await response.json();
+
+          alert(result.message || "Asset approved successfully.");
+
+          loadAssetApplications();
+          loadAdminStats();
+        } catch (error) {
+          console.error("Asset approval error:", error);
+
+          alert("Unable to approve asset.");
+        }
+      }
+
+      // ==========================================
+      // REJECT ASSET
+      // ==========================================
+
+      async function rejectAsset(id) {
+        const confirmed = confirm("Reject/remove this asset application?");
+
+        if (!confirmed) return;
+
+        try {
+          const response = await fetch(`/api/assets/${id}/reject`, {
+            method: "DELETE",
+          });
+
+          const result = await response.json();
+
+          alert(result.message || "Asset rejected successfully.");
+
+          loadAssetApplications();
+          loadAdminStats();
+        } catch (error) {
+          console.error("Asset rejection error:", error);
+
+          alert("Unable to reject asset.");
+        }
+      }
+      // ==========================================
+      // INITIAL LOAD
+      // ==========================================
+
+      loadAdminStats();
+      loadProfessionalApplications();
+      loadAssetApplications();
+    </script>
+  </body>
+</html>

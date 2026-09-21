@@ -1,0 +1,1404 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>AL-QUWwA HOME MARKETPLACE</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- =========================================
+       HEADER / NAVIGATION
+       ========================================= -->
+
+    <header class="header">
+      <div class="logo">AL-QUWwA HOME MARKETPLACE</div>
+
+      <nav class="navbar">
+        <a href="#home">Home</a>
+
+        <a href="#properties">Properties</a>
+        <a href="#estate">AL-QUWWA ESTATE</a>
+        <a href="#opportunities">Investment Opportunities</a>
+
+        <a href="#list">Sell / List Asset</a>
+        <a href="#professionals">Professional Services</a>
+        <a href="#investors">Investors</a>
+
+        <a href="#about">About</a>
+        <span id="userWelcome"> </span>
+
+        <a href="login.html" id="loginLink"> Login </a>
+
+        <a href="signup.html" class="signup-btn" id="signupLink"> Sign Up </a>
+
+        <button type="button" id="logoutBtn">Logout</button>
+      </nav>
+    </header>
+
+    <!-- =========================================
+       HOME SECTION
+       ========================================= -->
+
+    <main>
+      <section id="home" class="hero">
+        <div class="hero-content">
+          <h1>Discover Valuable Properties & Investment Opportunities</h1>
+
+          <p>
+            Connect with property owners, sellers and investors through
+            ALL-QUWAA HOME MARKETPLACE.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="#professionals" class="hero-btn">
+              Professional Services
+            </a>
+
+            <a href="#properties" class="hero-btn"> Explore Properties </a>
+
+            <a href="#opportunities" class="hero-btn">
+              Investment Opportunities
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================
+         SEARCH SECTION
+         ========================================= -->
+
+      <section class="search-section">
+        <h2>Find Your Next Opportunity</h2>
+
+        <div class="search-box">
+          <input
+            type="text"
+            id="searchKeyword"
+            placeholder="Search properties, land, businesses..."
+          />
+
+          <input type="text" id="searchLocation" placeholder="Location" />
+
+          <select id="searchAssetType">
+            <option value="">All Asset Types</option>
+
+            <option value="Property">Property</option>
+
+            <option value="Land">Land</option>
+
+            <option value="Business">Business</option>
+
+            <option value="Investment">Investment</option>
+          </select>
+
+          <button type="button" onclick="searchAssets()">Search</button>
+        </div>
+      </section>
+
+      <!-- =========================================
+         PROPERTIES SECTION
+         ========================================= -->
+
+      <section id="properties" class="section">
+        <h2>Featured Properties</h2>
+
+        <p class="section-intro">
+          Explore properties and valuable assets available through our
+          marketplace.
+        </p>
+
+        <div
+          id="assetListings"
+          class="asset-grid"
+          style="
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 25px;
+            width: 100%;
+            min-height: 200px;
+            visibility: visible;
+            opacity: 1;
+          "
+        ></div>
+      </section>
+
+      <!-- =========================================
+         INVESTMENT OPPORTUNITIES
+         ========================================= -->
+
+      <section id="opportunities" class="section">
+        <h2>Investment Opportunities</h2>
+
+        <p class="section-intro">
+          Discover opportunities designed for investors looking for valuable
+          assets and potential returns.
+        </p>
+
+        <div class="asset-grid" id="investmentListings"></div>
+      </section>
+
+      <section id="list" class="section listing-section">
+        <h2>Sell / List Your Asset</h2>
+
+        <p class="section-intro">
+          List your property, land, business or investment opportunity on
+          ALL-QUWAA HOME MARKETPLACE.
+        </p>
+
+        <form id="assetForm" class="asset-form">
+          <input type="text" id="assetName" placeholder="Asset Name" required />
+
+          <select id="assetType" required>
+            <option value="">Select Asset Type</option>
+            <option value="Property">Property</option>
+            <option value="Land">Land</option>
+            <option value="Business">Business</option>
+            <option value="Investment">Investment</option>
+          </select>
+
+          <select id="assetStatus" required>
+            <option value="">Select Asset Status</option>
+            <option value="New">New</option>
+            <option value="Existing">Existing</option>
+            <option value="Under Development">Under Development</option>
+          </select>
+
+          <input
+            type="text"
+            id="assetLocation"
+            placeholder="Asset Location"
+            required
+          />
+
+          <input
+            type="number"
+            id="assetPrice"
+            placeholder="Price (₦)"
+            min="0"
+            required
+          />
+
+          <select id="contactMethod" required>
+            <option value="">Preferred Contact Method</option>
+            <option value="Phone">Phone</option>
+            <option value="WhatsApp">WhatsApp</option>
+            <option value="Email">Email</option>
+          </select>
+
+          <textarea
+            id="assetDescription"
+            placeholder="Describe your asset..."
+            rows="6"
+            required
+          ></textarea>
+          <!-- ASSET IMAGE -->
+
+          <div class="form-group">
+            <label for="assetImage">Asset Image</label>
+
+            <input
+              type="file"
+              id="assetImage"
+              name="assetImage"
+              accept="image/*"
+            />
+
+            <small>
+              Upload a clear photo of the property, land, product or asset.
+            </small>
+          </div>
+
+          <!-- ASSET VIDEO -->
+
+          <div class="form-group">
+            <label for="assetVideo">Asset Video</label>
+
+            <input
+              type="file"
+              id="assetVideo"
+              name="assetVideo"
+              accept="video/*"
+            />
+
+            <small>
+              Upload a video showing the property, farm, product or asset.
+            </small>
+          </div>
+
+          <input
+            type="text"
+            id="investmentHighlight"
+            placeholder="Investment Highlight (optional)"
+          />
+
+          <button type="submit" class="primary-btn">Submit Asset</button>
+        </form>
+      </section>
+      <!-- =========================================
+     AL-QUWWA ESTATE
+     ========================================= -->
+
+      <section id="estate" class="section estate-section">
+        <h2>AL-QUWWA ESTATE</h2>
+
+        <p class="section-intro">
+          Discover land, houses, agricultural products and professional
+          agricultural services available for sale across Nigeria and beyond.
+        </p>
+
+        <div class="estate-grid">
+          <!-- LAND -->
+
+          <div class="estate-card">
+            <div class="estate-icon">🏡</div>
+
+            <h3>Land for Sale</h3>
+
+            <p>
+              Discover residential, commercial, industrial, agricultural and
+              investment land opportunities.
+            </p>
+
+            <a href="#properties" class="primary-btn"> Explore Land </a>
+          </div>
+
+          <!-- HOUSES -->
+
+          <div class="estate-card">
+            <div class="estate-icon">🏠</div>
+
+            <h3>Houses for Sale</h3>
+
+            <p>
+              Find houses, apartments, luxury homes, estates and other
+              residential properties.
+            </p>
+
+            <a href="#properties" class="primary-btn"> Explore Houses </a>
+          </div>
+
+          <!-- AGRICULTURAL PRODUCTS -->
+
+          <div class="estate-card">
+            <div class="estate-icon">🌾</div>
+
+            <h3>Agricultural Products</h3>
+
+            <p>
+              Buy and sell farm produce, crops, livestock and other agricultural
+              products.
+            </p>
+
+            <a href="#estate" class="primary-btn"> Explore Products </a>
+          </div>
+
+          <!-- AGRICULTURAL SERVICES -->
+
+          <div class="estate-card">
+            <div class="estate-icon">🚜</div>
+
+            <h3>Agricultural Services</h3>
+
+            <p>
+              Connect with farmers, farm managers, agricultural consultants and
+              service providers.
+            </p>
+
+            <a href="#professionals" class="primary-btn"> Find Services </a>
+          </div>
+        </div>
+      </section>
+      <!-- =========================================
+     PROFESSIONAL SERVICES
+     ========================================= -->
+
+      <section id="professionals" class="section professional-section">
+        <h2>Professional Services</h2>
+
+        <p class="section-intro">
+          Connect with trusted professionals who can help you buy, sell,
+          develop, manage, finance and invest in real estate, land and other
+          valuable assets.
+        </p>
+
+        <!-- =========================================
+       PROFESSIONAL SEARCH
+       ========================================= -->
+
+        <div class="professional-search">
+          <input
+            type="text"
+            id="professionalSearch"
+            placeholder="Search for a professional or service..."
+          />
+
+          <select id="professionalCategory">
+            <option value="">All Professional Services</option>
+
+            <option value="Real Estate Agent">Real Estate Agents</option>
+
+            <option value="Property Lawyer">Property Lawyers</option>
+
+            <option value="Surveyor">Land Surveyors</option>
+
+            <option value="Architect">Architects</option>
+
+            <option value="Contractor">Building Contractors</option>
+
+            <option value="Valuer">Property Valuers</option>
+
+            <option value="Property Manager">Property Managers</option>
+
+            <option value="Investment Consultant">
+              Investment Consultants
+            </option>
+
+            <option value="Quantity Surveyor">Quantity Surveyors</option>
+
+            <option value="Estate Developer">Estate Developers</option>
+
+            <option value="Mortgage Finance">
+              Mortgage & Property Finance
+            </option>
+
+            <option value="Interior Designer">Interior Designers</option>
+
+            <option value="Structural Engineer">Structural Engineers</option>
+
+            <option value="Civil Engineer">Civil Engineers</option>
+
+            <option value="Town Planner">Town Planners</option>
+
+            <option value="Facility Manager">Facility Managers</option>
+
+            <option value="Construction Supplier">
+              Construction Suppliers
+            </option>
+
+            <option value="Building Inspector">Building Inspectors</option>
+
+            <option value="Environmental Consultant">
+              Environmental Consultants
+            </option>
+
+            <option value="Real Estate Appraiser">
+              Real Estate Appraisers
+            </option>
+
+            <option value="Insurance Professional">
+              Property Insurance Professionals
+            </option>
+
+            <option value="Tax Consultant">Property Tax Consultants</option>
+
+            <option value="Land Documentation Specialist">
+              Land Documentation Specialists
+            </option>
+
+            <option value="Real Estate Marketing">
+              Real Estate Marketing Professionals
+            </option>
+
+            <!-- IT ADDED -->
+
+            <option value="Technology IT">Technology & IT Professionals</option>
+          </select>
+
+          <button
+            type="button"
+            class="primary-btn"
+            onclick="searchProfessionals()"
+          >
+            Find Professional
+          </button>
+        </div>
+
+        <!-- =========================================
+       PROFESSIONAL SERVICES GRID
+       ========================================= -->
+
+        <div id="professionalListings" class="professional-grid">
+          <!-- 1. REAL ESTATE AGENTS -->
+
+          <div class="professional-card" data-category="Real Estate Agent">
+            <div class="professional-icon">🏠</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Real Estate Agents</h3>
+
+              <p>
+                Connect with real estate agents who can help you buy, sell,
+                lease and manage properties.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Agent
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. PROPERTY LAWYERS -->
+
+          <div class="professional-card" data-category="Property Lawyer">
+            <div class="professional-icon">⚖️</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Property Lawyers</h3>
+
+              <p>
+                Get professional legal assistance with property documentation,
+                contracts, ownership and transactions.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Lawyer
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. LAND SURVEYORS -->
+
+          <div class="professional-card" data-category="Surveyor">
+            <div class="professional-icon">📐</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Land Surveyors</h3>
+
+              <p>
+                Find qualified surveyors for land measurement, boundary
+                identification and property surveying.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Surveyor
+              </button>
+            </div>
+          </div>
+
+          <!-- 4. ARCHITECTS -->
+
+          <div class="professional-card" data-category="Architect">
+            <div class="professional-icon">🏛️</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Architects</h3>
+
+              <p>
+                Connect with architects for building designs, property planning
+                and development projects.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Architect
+              </button>
+            </div>
+          </div>
+
+          <!-- 5. BUILDING CONTRACTORS -->
+
+          <div class="professional-card" data-category="Contractor">
+            <div class="professional-icon">🏗️</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Building Contractors</h3>
+
+              <p>
+                Find contractors for construction, renovation, repairs and
+                property development projects.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Contractor
+              </button>
+            </div>
+          </div>
+
+          <!-- 6. PROPERTY VALUERS -->
+
+          <div class="professional-card" data-category="Valuer">
+            <div class="professional-icon">💰</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Property Valuers</h3>
+
+              <p>
+                Get professional property valuation services to understand the
+                market value of your asset.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Valuer
+              </button>
+            </div>
+          </div>
+
+          <!-- 7. PROPERTY MANAGERS -->
+
+          <div class="professional-card" data-category="Property Manager">
+            <div class="professional-icon">🏢</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Property Managers</h3>
+
+              <p>
+                Find professionals who can manage, maintain and oversee
+                residential and commercial properties.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Manager
+              </button>
+            </div>
+          </div>
+
+          <!-- 8. INVESTMENT CONSULTANTS -->
+
+          <div class="professional-card" data-category="Investment Consultant">
+            <div class="professional-icon">📊</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Investment Consultants</h3>
+
+              <p>
+                Connect with professionals who can help evaluate investment
+                opportunities, risks and strategies.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Consultant
+              </button>
+            </div>
+          </div>
+
+          <!-- 9. QUANTITY SURVEYORS -->
+
+          <div class="professional-card" data-category="Quantity Surveyor">
+            <div class="professional-icon">📋</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Quantity Surveyors</h3>
+
+              <p>
+                Get professional cost estimation, budgeting and construction
+                cost management services.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Surveyor
+              </button>
+            </div>
+          </div>
+
+          <!-- 10. ESTATE DEVELOPERS -->
+
+          <div class="professional-card" data-category="Estate Developer">
+            <div class="professional-icon">🏘️</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Estate Developers</h3>
+
+              <p>
+                Connect with developers involved in residential estates,
+                commercial projects and property development.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Developer
+              </button>
+            </div>
+          </div>
+
+          <!-- 11. MORTGAGE & PROPERTY FINANCE -->
+
+          <div class="professional-card" data-category="Mortgage Finance">
+            <div class="professional-icon">🏦</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Mortgage & Property Finance</h3>
+
+              <p>
+                Connect with professionals who can assist with mortgage options,
+                property finance and funding solutions.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Finance Expert
+              </button>
+            </div>
+          </div>
+
+          <!-- 12. INTERIOR DESIGNERS -->
+
+          <div class="professional-card" data-category="Interior Designer">
+            <div class="professional-icon">🛋️</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Interior Designers</h3>
+
+              <p>
+                Find interior design professionals for residential, commercial
+                and luxury property interiors.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Designer
+              </button>
+            </div>
+          </div>
+
+          <!-- 13. STRUCTURAL ENGINEERS -->
+
+          <div class="professional-card" data-category="Structural Engineer">
+            <div class="professional-icon">🧱</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Structural Engineers</h3>
+
+              <p>
+                Get professional structural design, assessment and engineering
+                services for your building projects.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Engineer
+              </button>
+            </div>
+          </div>
+
+          <!-- 14. CIVIL ENGINEERS -->
+
+          <div class="professional-card" data-category="Civil Engineer">
+            <div class="professional-icon">🏗️</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Civil Engineers</h3>
+
+              <p>
+                Connect with civil engineers for infrastructure, construction
+                and property development projects.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Engineer
+              </button>
+            </div>
+          </div>
+
+          <!-- 15. TOWN PLANNERS -->
+
+          <div class="professional-card" data-category="Town Planner">
+            <div class="professional-icon">🗺️</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Town Planners</h3>
+
+              <p>
+                Get professional assistance with land use, development planning,
+                zoning and urban planning matters.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Planner
+              </button>
+            </div>
+          </div>
+
+          <!-- 16. FACILITY MANAGERS -->
+
+          <div class="professional-card" data-category="Facility Manager">
+            <div class="professional-icon">🔧</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Facility Managers</h3>
+
+              <p>
+                Find professionals who manage building operations, maintenance,
+                safety and facility services.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Manager
+              </button>
+            </div>
+          </div>
+
+          <!-- 17. CONSTRUCTION SUPPLIERS -->
+
+          <div class="professional-card" data-category="Construction Supplier">
+            <div class="professional-icon">🧰</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Construction Suppliers</h3>
+
+              <p>
+                Find trusted suppliers of building materials, construction
+                equipment, fittings and development products.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Supplier
+              </button>
+            </div>
+          </div>
+
+          <!-- 18. BUILDING INSPECTORS -->
+
+          <div class="professional-card" data-category="Building Inspector">
+            <div class="professional-icon">🔍</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Building Inspectors</h3>
+
+              <p>
+                Get professional building inspection services to identify
+                structural, safety and property issues.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Inspector
+              </button>
+            </div>
+          </div>
+
+          <!-- 19. ENVIRONMENTAL CONSULTANTS -->
+
+          <div
+            class="professional-card"
+            data-category="Environmental Consultant"
+          >
+            <div class="professional-icon">🌱</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Environmental Consultants</h3>
+
+              <p>
+                Connect with environmental professionals for environmental
+                assessments, compliance and development planning.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Consultant
+              </button>
+            </div>
+          </div>
+
+          <!-- 20. REAL ESTATE APPRAISERS -->
+
+          <div class="professional-card" data-category="Real Estate Appraiser">
+            <div class="professional-icon">📈</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Real Estate Appraisers</h3>
+
+              <p>
+                Get professional property appraisal services for buying,
+                selling, financing and investment decisions.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Appraiser
+              </button>
+            </div>
+          </div>
+
+          <!-- 21. PROPERTY INSURANCE -->
+
+          <div class="professional-card" data-category="Insurance Professional">
+            <div class="professional-icon">🛡️</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Property Insurance Professionals</h3>
+
+              <p>
+                Connect with professionals who can help protect homes,
+                buildings, land and other property investments.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Insurance Expert
+              </button>
+            </div>
+          </div>
+
+          <!-- 22. PROPERTY TAX CONSULTANTS -->
+
+          <div class="professional-card" data-category="Tax Consultant">
+            <div class="professional-icon">🧾</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Property Tax Consultants</h3>
+
+              <p>
+                Get assistance with property-related tax matters, assessments,
+                compliance and documentation.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Tax Consultant
+              </button>
+            </div>
+          </div>
+
+          <!-- 23. LAND DOCUMENTATION -->
+
+          <div
+            class="professional-card"
+            data-category="Land Documentation Specialist"
+          >
+            <div class="professional-icon">📑</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Land Documentation Specialists</h3>
+
+              <p>
+                Find professionals who can assist with land documentation, title
+                processing, searches and property records.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Specialist
+              </button>
+            </div>
+          </div>
+
+          <!-- 24. REAL ESTATE MARKETING -->
+
+          <div class="professional-card" data-category="Real Estate Marketing">
+            <div class="professional-icon">📣</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Real Estate Marketing Professionals</h3>
+
+              <p>
+                Connect with professionals who specialize in property
+                advertising, digital marketing, photography and property
+                promotion.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find Marketing Expert
+              </button>
+            </div>
+          </div>
+
+          <!-- =====================================
+         25. TECHNOLOGY & IT PROFESSIONALS
+         ===================================== -->
+
+          <div class="professional-card" data-category="Technology IT">
+            <div class="professional-icon">💻</div>
+
+            <div class="professional-content">
+              <span class="verified-badge"> ✓ Verified Service </span>
+
+              <h3>Technology & IT Professionals</h3>
+
+              <p>
+                Connect with IT professionals who can provide website
+                development, mobile applications, software solutions,
+                cybersecurity, networking, database systems, cloud services, IT
+                support and property technology solutions.
+              </p>
+
+              <button type="button" class="primary-btn professional-btn">
+                Find IT Professional
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- =========================================
+     PROFESSIONAL REGISTRATION FORM
+     ========================================= -->
+
+        <div
+          id="professionalRegistration"
+          class="professional-registration"
+          style="display: none"
+        >
+          <div class="professional-registration-box">
+            <button
+              type="button"
+              class="close-professional-form"
+              onclick="closeProfessionalRegistration()"
+            >
+              ×
+            </button>
+
+            <h2>Register as a Professional</h2>
+
+            <p>
+              Create your professional profile and connect with clients through
+              AL-QUWAA HOME MARKETPLACE.
+            </p>
+
+            <form id="professionalForm">
+              <input
+                type="text"
+                id="professionalName"
+                placeholder="Full Name or Company Name"
+                required
+              />
+
+              <select id="professionalType" required>
+                <option value="">Select Professional Service</option>
+
+                <option value="Real Estate Agent">Real Estate Agent</option>
+                <option value="Property Lawyer">Property Lawyer</option>
+                <option value="Surveyor">Land Surveyor</option>
+                <option value="Architect">Architect</option>
+                <option value="Contractor">Building Contractor</option>
+                <option value="Valuer">Property Valuer</option>
+                <option value="Property Manager">Property Manager</option>
+                <option value="Investment Consultant">
+                  Investment Consultant
+                </option>
+                <option value="Quantity Surveyor">Quantity Surveyor</option>
+                <option value="Estate Developer">Estate Developer</option>
+                <option value="Mortgage Finance">
+                  Mortgage & Property Finance
+                </option>
+                <option value="Interior Designer">Interior Designer</option>
+                <option value="Structural Engineer">Structural Engineer</option>
+                <option value="Civil Engineer">Civil Engineer</option>
+                <option value="Town Planner">Town Planner</option>
+                <option value="Facility Manager">Facility Manager</option>
+                <option value="Construction Supplier">
+                  Construction Supplier
+                </option>
+                <option value="Building Inspector">Building Inspector</option>
+                <option value="Environmental Consultant">
+                  Environmental Consultant
+                </option>
+                <option value="Real Estate Appraiser">
+                  Real Estate Appraiser
+                </option>
+                <option value="Insurance Professional">
+                  Insurance Professional
+                </option>
+                <option value="Tax Consultant">Tax Consultant</option>
+                <option value="Land Documentation Specialist">
+                  Land Documentation Specialist
+                </option>
+                <option value="Real Estate Marketing">
+                  Real Estate Marketing
+                </option>
+                <option value="Technology IT">
+                  Technology & IT Professional
+                </option>
+              </select>
+
+              <input
+                type="text"
+                id="professionalLocation"
+                placeholder="City / Location"
+                required
+              />
+
+              <input
+                type="tel"
+                id="professionalPhone"
+                placeholder="Phone Number"
+                required
+              />
+
+              <input
+                type="email"
+                id="professionalEmail"
+                placeholder="Professional Email"
+                required
+              />
+
+              <textarea
+                id="professionalDescription"
+                placeholder="Describe your professional services..."
+                rows="5"
+                required
+              ></textarea>
+
+              <button type="submit" class="primary-btn">
+                Submit Professional Registration
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- =========================================
+       BECOME A PROFESSIONAL
+       ========================================= -->
+
+        <div class="professional-cta">
+          <div>
+            <h3>Are You a Property Professional?</h3>
+
+            <p>
+              Join AL-QUWAA HOME MARKETPLACE and connect with property owners,
+              buyers, sellers, developers and investors.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="primary-btn"
+            onclick="registerProfessional()"
+          >
+            Register as a Professional
+          </button>
+        </div>
+      </section>
+
+      <!-- =========================================
+         INVESTORS
+         ========================================= -->
+
+      <section id="investors" class="section">
+        <h2>For Investors</h2>
+
+        <p class="section-intro">
+          Track investments and discover new opportunities through your investor
+          dashboard.
+        </p>
+
+        <a href="investor.html" class="primary-btn"> Investor Dashboard </a>
+      </section>
+
+      <!-- =========================================
+         ABOUT
+         ========================================= -->
+
+      <section id="about" class="section">
+        <h2>About AL-QUWwA HOME MARKETPLACE</h2>
+
+        <p class="section-intro">
+          AL-QUWwA HOME MARKETPLACE is designed to connect property owners,
+          sellers, businesses and investors in one trusted marketplace.
+        </p>
+      </section>
+    </main>
+    <!-- =========================================
+     MAIN MARKETPLACE FOOTER
+     ========================================= -->
+
+    <footer class="main-footer">
+      <!-- FOOTER TOP -->
+      <div class="footer-top">
+        <!-- ABOUT -->
+        <div class="footer-column">
+          <h3>ABOUT AL-QUWAA</h3>
+
+          <a href="#about">About Us</a>
+          <a href="#about">Our Mission</a>
+          <a href="#home">How AL-QUWAA Works</a>
+          <a href="#about">Contact Us</a>
+          <a href="#about">Careers</a>
+          <a href="#about">Become a Partner</a>
+        </div>
+
+        <!-- BUY & EXPLORE -->
+        <div class="footer-column">
+          <h3>BUY & EXPLORE</h3>
+
+          <a href="#properties">Properties for Sale</a>
+          <a href="#properties">Land for Sale</a>
+          <a href="#properties">Houses</a>
+          <a href="#properties">Commercial Properties</a>
+          <a href="#properties">Businesses for Sale</a>
+          <a href="#opportunities">Investment Opportunities</a>
+          <a href="#properties">Featured Assets</a>
+        </div>
+        <!-- AL-QUWAA ESTATE -->
+
+        <div class="footer-column">
+          <h3>AL-QUWAA ESTATE</h3>
+
+          <a href="#estate">Land for Sale</a>
+          <a href="#estate">Houses for Sale</a>
+          <a href="#estate">Agricultural Products</a>
+          <a href="#estate">Agricultural Services</a>
+          <a href="#estate">Farms & Agricultural Land</a>
+          <a href="#estate">Farm Equipment & Supplies</a>
+          <a href="#list">List Your Property</a>
+          <a href="#list">List Agricultural Products</a>
+          <a href="#list">List Agricultural Services</a>
+        </div>
+
+        <!-- SELL / LIST -->
+        <div class="footer-column">
+          <h3>SELL / LIST</h3>
+
+          <a href="#list">Sell Your Property</a>
+          <a href="#list">List Land</a>
+          <a href="#list">List a Business</a>
+          <a href="#list">List an Investment</a>
+          <a href="#list">How to List an Asset</a>
+          <a href="#list">Listing Guidelines</a>
+          <a href="#list">Advertise Your Asset</a>
+        </div>
+
+        <!-- INVESTORS -->
+        <div class="footer-column">
+          <h3>INVESTORS</h3>
+
+          <a href="#investors">Investor Dashboard</a>
+          <a href="#opportunities">Investment Opportunities</a>
+          <a href="#properties">Find Assets</a>
+          <a href="investor.html">Investor Registration</a>
+          <a href="#investors">Investor Support</a>
+        </div>
+
+        <!-- PROFESSIONAL DIRECTORY -->
+        <div class="footer-column">
+          <h3>PROFESSIONAL DIRECTORY</h3>
+
+          <a href="#professionals">Real Estate Agents</a>
+          <a href="#professionals">Property Lawyers</a>
+          <a href="#professionals">Land Surveyors</a>
+          <a href="#professionals">Architects</a>
+          <a href="#professionals">Building Contractors</a>
+          <a href="#professionals">Property Valuers</a>
+          <a href="#professionals">Property Managers</a>
+          <a href="#professionals">Estate Developers</a>
+        </div>
+
+        <!-- TECHNOLOGY & PROPTECH -->
+        <div class="footer-column">
+          <h3>TECHNOLOGY, IT & PROPTECH</h3>
+
+          <a href="#professionals">Technology & IT Professionals</a>
+          <a href="#professionals">Website Development</a>
+          <a href="#professionals">Mobile App Development</a>
+          <a href="#professionals">Property Management Software</a>
+          <a href="#professionals">CRM Solutions</a>
+          <a href="#professionals">Cybersecurity</a>
+          <a href="#professionals">AI & Automation</a>
+          <a href="#professionals">GIS & Property Mapping</a>
+          <a href="#professionals">Payment Integration</a>
+          <a href="#professionals">PropTech Solutions</a>
+        </div>
+
+        <!-- PROPERTY DEVELOPMENT -->
+        <div class="footer-column">
+          <h3>PROPERTY DEVELOPMENT</h3>
+
+          <a href="#professionals">Quantity Surveyors</a>
+          <a href="#professionals">Structural Engineers</a>
+          <a href="#professionals">Civil Engineers</a>
+          <a href="#professionals">Town Planners</a>
+          <a href="#professionals">Interior Designers</a>
+          <a href="#professionals">Facility Managers</a>
+          <a href="#professionals">Building Inspectors</a>
+          <a href="#professionals">Environmental Consultants</a>
+        </div>
+
+        <!-- HELP & SUPPORT -->
+        <div class="footer-column">
+          <h3>HELP & SUPPORT</h3>
+
+          <a href="#home">Help Center</a>
+          <a href="#home">Buying Guide</a>
+          <a href="#home">Selling Guide</a>
+          <a href="#home">Investment Guide</a>
+          <a href="#home">Frequently Asked Questions</a>
+          <a href="#home">Contact Support</a>
+          <a href="#home">Report a Problem</a>
+        </div>
+
+        <!-- SAFETY & TRUST -->
+        <div class="footer-column">
+          <h3>SAFETY & TRUST</h3>
+
+          <a href="#home">Asset Verification</a>
+          <a href="#professionals">Professional Verification</a>
+          <a href="#home">Seller Verification</a>
+          <a href="#home">Safety Guidelines</a>
+          <a href="#home">Fraud Prevention</a>
+          <a href="#home">Report Suspicious Listing</a>
+          <a href="#home">Terms & Conditions</a>
+          <a href="#home">Privacy Policy</a>
+        </div>
+
+        <!-- PAYMENT DIRECTORY -->
+        <div class="footer-column">
+          <h3>PAYMENT DIRECTORY</h3>
+
+          <a href="#home">Payment Methods</a>
+          <a href="#home">Paystack</a>
+          <a href="#home">Payment Security</a>
+          <a href="#home">Payment Verification</a>
+          <a href="#home">Refund Policy</a>
+          <a href="#home">Transaction Fees</a>
+          <a href="#home">Payment FAQs</a>
+        </div>
+
+        <!-- JOIN AL-QUWAA -->
+        <div class="footer-column">
+          <h3>JOIN AL-QUWAA</h3>
+
+          <a href="signup.html">Create Account</a>
+          <a href="login.html">Login</a>
+          <a href="#list">Register as a Seller</a>
+          <a href="investor.html">Register as an Investor</a>
+          <a href="#professionals">Register as a Professional</a>
+          <a href="#about">Become a Partner</a>
+        </div>
+      </div>
+
+      <!-- PROFESSIONAL CTA -->
+      <div class="footer-professional-cta">
+        <div>
+          <h3>Are You a Real Estate or Technology Professional?</h3>
+
+          <p>
+            Join AL-QUWAA HOME MARKETPLACE and connect with property owners,
+            buyers, sellers, developers, businesses and investors.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="primary-btn"
+          onclick="registerProfessional()"
+        >
+          Register as a Professional
+        </button>
+      </div>
+
+      <!-- CONNECT -->
+      <div class="footer-connect">
+        <h3>CONNECT WITH AL-QUWAA</h3>
+
+        <div class="footer-social">
+          <a href="#">Facebook</a>
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">X</a>
+          <a href="#">WhatsApp</a>
+          <a href="#">YouTube</a>
+        </div>
+      </div>
+
+      <!-- FOOTER BOTTOM -->
+      <div class="footer-bottom">
+        <div>
+          <strong> AL-QUWAA HOME MARKETPLACE </strong>
+
+          <p>
+            Connecting people with properties, businesses, investments and
+            valuable assets.
+          </p>
+        </div>
+
+        <div class="footer-bottom-links">
+          <a href="#about">Privacy Policy</a>
+
+          <a href="#about">Terms & Conditions</a>
+
+          <a href="#about">Cookie Policy</a>
+
+          <a href="#home">Safety Center</a>
+        </div>
+      </div>
+    </footer>
+    <!-- ==========================================
+     ASSET DETAILS MODAL
+     ========================================== -->
+
+    <div id="assetModal" class="asset-modal">
+      <div class="asset-modal-content">
+        <button class="close-modal" onclick="closeAssetModal()">×</button>
+
+        <h2 id="modalAssetName"></h2>
+
+        <p>
+          <strong>Type:</strong>
+          <span id="modalAssetType"></span>
+        </p>
+
+        <p>
+          <strong>Location:</strong>
+          <span id="modalAssetLocation"></span>
+        </p>
+
+        <p>
+          <strong>Price:</strong>
+          ₦<span id="modalAssetPrice"></span>
+        </p>
+
+        <p>
+          <strong>Status:</strong>
+          <span id="modalAssetStatus"></span>
+        </p>
+
+        <p>
+          <strong>Contact Method:</strong>
+          <span id="modalAssetContact"></span>
+        </p>
+
+        <div class="modal-description">
+          <h3>Description</h3>
+          <p id="modalAssetDescription"></p>
+        </div>
+
+        <div class="modal-investment">
+          <h3>Investment Highlight</h3>
+          <p id="modalInvestmentHighlight"></p>
+        </div>
+
+        <button class="contact-seller-btn">Contact Seller</button>
+      </div>
+    </div>
+
+    <script src="script.js?v=2"></script>
+  </body>
+</html>
