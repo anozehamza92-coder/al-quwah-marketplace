@@ -45,3 +45,18 @@ jobs:
           done
           echo "Render did not report the expected commit $EXPECTED_SHA"
           exit 1
+
+  package-release:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Build project ZIP
+        run: zip -r AL-QUWAH-Marketplace.zip . -x ".git/*" "node_modules/*" ".github/*"
+      - name: Upload downloadable ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: AL-QUWAH-Marketplace
+          path: AL-QUWAH-Marketplace.zip
+          retention-days: 30
