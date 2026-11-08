@@ -267,11 +267,11 @@ app.post("/api/signup", async (req, res) => {
       .prepare(
         `
         INSERT INTO users
-        (name, email, password, role)
-        VALUES (?, ?, ?, ?)
+        (name, email, phone, password, role)
+        VALUES (?, ?, ?, ?, ?)
       `,
       )
-      .run(name, email, hashedPassword, requestedRole);
+      .run(name.trim(), email.trim().toLowerCase(), phone.trim(), hashedPassword, requestedRole);
 
     res.status(201).json({
       success: true,
