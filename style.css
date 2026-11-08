@@ -3924,7 +3924,7 @@ body {
     gap: 10px;
   }
 }
-```css
+
 /* =========================================================
    AL-QUWAH PROPERTY
    PREMIUM APPLICANT CARD UPGRADE
@@ -4645,3 +4645,256 @@ select option:checked {
   border-radius: 12px;
   color: #64748b;
 }
+
+/* =========================================================
+   FINAL GLOBAL COLOR + CONTRAST CONSISTENCY PATCH
+   Keep text readable across light and dark sections.
+   ========================================================= */
+
+:root {
+  color-scheme: light;
+  --aq-readable-text: #172033;
+  --aq-readable-muted: #596579;
+  --aq-readable-navy: #071a33;
+  --aq-readable-gold: #f2d675;
+}
+
+body {
+  color: var(--aq-readable-text);
+}
+
+/* Native form controls: dark text on light controls by default. */
+input,
+select,
+textarea {
+  color: var(--aq-readable-text);
+  background-color: #ffffff;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #64748b;
+  opacity: 1;
+}
+
+select,
+select:focus {
+  color: var(--aq-readable-text);
+  background-color: #ffffff;
+}
+
+select option,
+select option:checked {
+  color: var(--aq-readable-text) !important;
+  background-color: #ffffff !important;
+}
+
+/* Dark listing form controls retain high-contrast light text. */
+#list input,
+#list select,
+#list textarea,
+.listing-section input,
+.listing-section select,
+.listing-section textarea {
+  color: #ffffff;
+  background-color: #0b2948;
+}
+
+#list input::placeholder,
+#list textarea::placeholder,
+.listing-section input::placeholder,
+.listing-section textarea::placeholder {
+  color: #c5d2e0;
+  opacity: 1;
+}
+
+#list select option,
+.listing-section select option {
+  color: var(--aq-readable-text) !important;
+  background-color: #ffffff !important;
+}
+
+/* Headings and supporting copy on dark photographic/gradient sections. */
+.search-section h2 {
+  color: #ffffff !important;
+}
+
+#opportunities h2,
+#investors h2,
+#list h2,
+.listing-section h2,
+.professional-section h2,
+.estate-section h2 {
+  color: var(--aq-readable-gold) !important;
+}
+
+#opportunities .section-intro,
+#investors .section-intro,
+#list .section-intro,
+.listing-section .section-intro,
+.professional-section .section-intro,
+.estate-section .section-intro {
+  color: #e8eef6 !important;
+}
+
+/* Light sections keep dark headings and readable supporting copy. */
+#properties h2,
+#about h2,
+.section h2 {
+  color: var(--aq-readable-navy);
+}
+
+#properties .section-intro,
+#about .section-intro {
+  color: var(--aq-readable-muted);
+}
+
+/* Listing and investment cards always use dark text on white cards. */
+#assetListings .asset-card,
+#assetListings .asset-card-content,
+#investmentListings .asset-card,
+#investmentListings .asset-card-content,
+#agriculturalListings .asset-card,
+#agriculturalListings .asset-card-content {
+  color: var(--aq-readable-text);
+}
+
+#assetListings .asset-card h3,
+#investmentListings .asset-card h3,
+#agriculturalListings .asset-card h3 {
+  color: var(--aq-readable-navy);
+}
+
+#assetListings .asset-card p,
+#investmentListings .asset-card p,
+#agriculturalListings .asset-card p {
+  color: #374151;
+}
+
+/* Professional cards and search controls sit on contrasting surfaces. */
+.professional-card,
+.registered-professional-card {
+  color: var(--aq-readable-text);
+}
+
+.professional-content h3,
+.professional-name {
+  color: var(--aq-readable-navy);
+}
+
+.professional-content p,
+.professional-description,
+.professional-info {
+  color: #475569;
+}
+
+.professional-search input,
+.professional-search select {
+  color: var(--aq-readable-text);
+  background-color: #ffffff;
+}
+
+.professional-search input::placeholder {
+  color: #64748b;
+}
+
+/* Login and registration forms. */
+.auth-container,
+.auth-box,
+.auth-container h1,
+.auth-container h2,
+.auth-container p {
+  color: var(--aq-readable-text);
+}
+
+.auth-container input,
+.auth-container select,
+.auth-container textarea {
+  color: var(--aq-readable-text);
+  background-color: #ffffff;
+}
+
+#loginMessage {
+  color: #b42318;
+}
+
+/* User dashboard panels use consistent dark text on white surfaces. */
+.dashboard-section {
+  color: var(--aq-readable-text);
+}
+
+.dashboard-section h2,
+.dashboard-welcome-card h3,
+.dashboard-panel h3,
+.my-listing-card h4 {
+  color: var(--aq-readable-navy);
+}
+
+.dashboard-label,
+.dashboard-stat-label,
+.dashboard-panel p,
+.my-listing-details {
+  color: #475569;
+}
+
+.dashboard-stat-number {
+  color: var(--aq-readable-navy);
+}
+
+.dashboard-role span {
+  color: #075b3b;
+}
+
+.listing-status.pending {
+  color: #8a4b08;
+}
+
+.listing-status.approved {
+  color: #137333;
+}
+
+/* Modal content should never inherit white text from a dark page section. */
+.asset-modal-content,
+.professional-profile-box {
+  color: var(--aq-readable-text);
+  background-color: #ffffff;
+}
+
+.asset-modal-content h2,
+.professional-profile-box h2,
+.professional-profile-box h3 {
+  color: var(--aq-readable-navy);
+}
+
+.asset-modal-content p,
+.professional-profile-box p {
+  color: #374151;
+}
+
+.close-modal {
+  color: var(--aq-readable-navy);
+}
+
+/* Keyboard focus remains visible on links, buttons and form fields. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #d4af37;
+  outline-offset: 2px;
+}
+
+/* Responsive spacing: preserve horizontal gutters on small screens. */
+@media (max-width: 650px) {
+  .section,
+  .dashboard-section {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+
+  .asset-form {
+    width: 100%;
+  }
+}
+
