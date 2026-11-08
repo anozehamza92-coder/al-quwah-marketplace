@@ -130,6 +130,7 @@ async function loadAssets() {
 
     displayAssets(assets);
     displayInvestmentListings(assets);
+    displayAgriculturalProducts(assets);
   } catch (error) {
     console.error("Error loading assets:", error);
 
@@ -150,7 +151,8 @@ function displayAssets(assetList) {
 
   if (!container) return;
 
-  if (!assetList || assetList.length === 0) {
+  const propertyAssets = (assetList || []).filter((asset) => !isAgriculturalProduct(asset));
+  if (propertyAssets.length === 0) {
     container.innerHTML = `
       <p class="empty-message">
         No assets are currently available.
@@ -161,7 +163,7 @@ function displayAssets(assetList) {
 
   container.innerHTML = "";
 
-  assetList.forEach((asset) => {
+  propertyAssets.forEach((asset) => {
     const card = document.createElement("div");
 
     card.className = "asset-card";
@@ -232,6 +234,54 @@ function displayAssets(assetList) {
       </div>
     `;
 
+    container.appendChild(card);
+  });
+}
+
+/* Identify agricultural goods consistently, including older listings with related category names. */
+function isAgriculturalProduct(asset) {
+  const type = String(asset?.type || asset?.assetType || "").trim().toLowerCase();
+  return [
+    "agricultural product",
+    "agricultural products",
+    "farm produce",
+    "crop",
+    "crops",
+    "livestock",
+    "farm equipment",
+  ].includes(type);
+}
+
+/* Display approved agricultural goods in their dedicated marketplace section. */
+function displayAgriculturalProducts(assetList) {
+  const container = document.getElementById("agriculturalListings");
+  if (!container) return;
+
+  const products = (assetList || []).filter(isAgriculturalProduct);
+  if (products.length === 0) {
+    container.innerHTML = '<p class="empty-message">No agricultural products are currently available. Check back soon.</p>';
+    return;
+  }
+
+  container.innerHTML = "";
+  products.forEach((asset) => {
+    const card = document.createElement("div");
+    card.className = "asset-card";
+    const imageHTML = asset.image
+      ? `<div class="asset-card-media"><img src="${escapeHTML(asset.image)}" alt="${escapeHTML(asset.name || "Agricultural product")}" loading="lazy" /></div>`
+      : '<div class="asset-card-media asset-no-image"><span>No Image Available</span></div>';
+
+    card.innerHTML = `
+      ${imageHTML}
+      <div class="asset-card-content">
+        <h3>${escapeHTML(asset.name || "Agricultural product")}</h3>
+        <p><strong>Category:</strong> ${escapeHTML(asset.type || "Agricultural Product")}</p>
+        <p><strong>Location:</strong> ${escapeHTML(asset.location || "N/A")}</p>
+        <p><strong>Price:</strong> ${escapeHTML(String(asset.price || "Contact seller"))}</p>
+        <p><strong>Availability:</strong> ${escapeHTML(asset.status || "Available")}</p>
+        <p>${escapeHTML(asset.description || "")}</p>
+        <button type="button" class="primary-btn" onclick="viewAsset(${Number(asset.id)})">View Details</button>
+      </div>`;
     container.appendChild(card);
   });
 }
@@ -520,6 +570,7 @@ function searchAssets() {
   });
 
   displayAssets(filteredAssets);
+  displayAgriculturalProducts(filteredAssets);
 }
 
 /* =========================================
