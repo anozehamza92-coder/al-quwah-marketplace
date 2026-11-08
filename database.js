@@ -11,7 +11,6 @@ db.pragma("journal_mode = WAL");
 
 console.log("AL-QUWWA HOME MARKETPLACE database connected.");
 
-module.exports = db;
 // ==========================================
 // DATABASE TABLES
 // ==========================================
@@ -22,11 +21,18 @@ db.exec(`
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
+    phone TEXT,
     password TEXT NOT NULL,
     role TEXT DEFAULT 'buyer',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )
 `);
+
+// Safely add the phone field to databases created by earlier versions.
+const userColumns = db.pragma("table_info(users)");
+if (!userColumns.some((column) => column.name === "phone")) {
+  db.exec("ALTER TABLE users ADD COLUMN phone TEXT");
+}
 
 // ASSETS TABLE
 db.exec(`
@@ -67,3 +73,5 @@ db.exec(`
 `);
 
 console.log("AL-QUWWA HOME MARKETPLACE database tables are ready.");
+
+module.exports = db;
