@@ -21,3 +21,27 @@ jobs:
         run: npm ci
       - name: Run integration tests
         run: npm test
+
+  live-smoke:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Render to deploy this commit and verify health
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+          HEALTH_URL: https://al-quwah-marketplace.onrender.com/api/health
+        run: |
+          for attempt in $(seq 1 40); do
+            response=$(curl --silent --show-error --fail "$HEALTH_URL" || true)
+            if [ -n "$response" ]; then
+              actual_sha=$(printf '%s' "$response" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).version||'unknown')}catch{console.log('invalid')}})")
+              if [ "$actual_sha" = "$EXPECTED_SHA" ]; then
+                echo "Live Render deployment matches $EXPECTED_SHA"
+                exit 0
+              fi
+            fi
+            echo "Waiting for Render deployment ($attempt/40); reported version: ${actual_sha:-unavailable}"
+            sleep 15
+          done
+          echo "Render did not report the expected commit $EXPECTED_SHA"
+          exit 1
