@@ -222,6 +222,31 @@ app.get("/admin.html", requireAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, "admin.html"));
 });
 
+// Never expose the SQLite database or its journal files through static hosting.
+const databaseFileName = path.basename(
+  process.env.SQLITE_DB_PATH ||
+    path.join(process.env.DATA_DIR || __dirname, "marketplace.db"),
+);
+app.use((req, res, next) => {
+  let requestedPath;
+  try {
+    requestedPath = decodeURIComponent(req.path);
+  } catch (error) {
+    return res.status(400).end();
+  }
+
+  const requestedFile = path.basename(requestedPath);
+  if (
+    requestedFile === databaseFileName ||
+    requestedFile === `${databaseFileName}-wal` ||
+    requestedFile === `${databaseFileName}-shm`
+  ) {
+    return res.status(404).end();
+  }
+
+  next();
+});
+
 app.use(express.static(__dirname));
 app.use("/uploads", express.static(uploadDirectory));
 
