@@ -203,7 +203,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Lightweight health check for hosting-platform health checks and deployment verification.
 app.get("/api/health", (req, res) => {
-  res.json({ success: true, service: "AL-QUWAH Marketplace", status: "ok" });
+  res.json({ success: true, service: "AL-QUWAH Marketplace", status: "ok", version: process.env.RENDER_GIT_COMMIT || "unknown" });
 });
 
 // ==========================================
