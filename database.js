@@ -1,6 +1,11 @@
 const Database = require("better-sqlite3");
+const path = require("path");
+const fs = require("fs");
 
-const db = new Database("marketplace.db");
+const dataDirectory = process.env.DATA_DIR || __dirname;
+fs.mkdirSync(dataDirectory, { recursive: true });
+const databasePath = process.env.SQLITE_DB_PATH || path.join(dataDirectory, "marketplace.db");
+const db = new Database(databasePath);
 
 db.pragma("journal_mode = WAL");
 
