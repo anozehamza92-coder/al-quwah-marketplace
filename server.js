@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 // FILE UPLOAD CONFIGURATION
 // ==========================================
 
-const uploadDirectory = path.join(__dirname, "uploads");
+const uploadDirectory = process.env.UPLOADS_DIR || path.join(process.env.DATA_DIR || __dirname, "uploads");
 console.log("AL-QUWAH UPLOAD DIRECTORY:", uploadDirectory);
 
 // Create uploads folder automatically if it does not exist
@@ -201,6 +201,11 @@ function requireAdmin(req, res, next) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Lightweight health check for hosting-platform health checks and deployment verification.
+app.get("/api/health", (req, res) => {
+  res.json({ success: true, service: "AL-QUWAH Marketplace", status: "ok" });
+});
+
 // ==========================================
 // HOME
 // ==========================================
@@ -327,7 +332,7 @@ app.post("/api/login", async (req, res) => {
 
     res.setHeader(
       "Set-Cookie",
-      `${AUTH_COOKIE}=${authToken}; HttpOnly; Path=/; Max-Age=7200; SameSite=Lax`,
+      `${AUTH_COOKIE}=${authToken}; HttpOnly; Path=/; Max-Age=7200; SameSite=Lax${process.env.NODE_ENV === "production" ? "; Secure" : ""}`,
     );
 
     res.json({
@@ -1078,7 +1083,7 @@ app.delete("/api/professionals/:id", requireAdmin, (req, res) => {
 app.post("/api/logout", (req, res) => {
   res.setHeader(
     "Set-Cookie",
-    `${AUTH_COOKIE}=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax`,
+    `${AUTH_COOKIE}=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax${process.env.NODE_ENV === "production" ? "; Secure" : ""}`,
   );
 
   res.json({
