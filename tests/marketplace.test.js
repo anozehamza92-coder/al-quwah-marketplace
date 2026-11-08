@@ -50,6 +50,9 @@ test("marketplace health, signup, normalized login and protected listings", asyn
   assert.equal(health.success, true);
   assert.equal(health.status, "ok");
 
+  const databaseExposure = await fetch(`${baseUrl}/marketplace.db`);
+  assert.equal(databaseExposure.status, 404, "SQLite database must not be publicly downloadable");
+
   const signup = await fetch(`${baseUrl}/api/signup`, {
     method: "POST",
     headers: { "content-type": "application/json" },
