@@ -252,7 +252,7 @@ app.post("/api/signup", async (req, res) => {
 
     const existingUser = db
       .prepare("SELECT id FROM users WHERE email = ?")
-      .get(email);
+      .get(email.trim().toLowerCase());
 
     if (existingUser) {
       return res.status(409).json({
