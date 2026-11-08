@@ -78,12 +78,13 @@ const AUTH_SECRET =
   "AL-QUWAH-PROPERTY-CHANGE-THIS-SECRET-IN-PRODUCTION";
 
 const AUTH_COOKIE = "alquwah_auth";
+const AUTH_TOKEN_TTL_SECONDS = 30 * 24 * 60 * 60; // Keep users signed in for 30 days.
 
 function createAuthToken(user) {
   const payload = {
     id: user.id,
     role: user.role,
-    exp: Date.now() + 2 * 60 * 60 * 1000,
+    exp: Date.now() + AUTH_TOKEN_TTL_SECONDS * 1000,
   };
 
   const encodedPayload = Buffer.from(JSON.stringify(payload)).toString(
@@ -362,7 +363,7 @@ app.post("/api/login", async (req, res) => {
 
     res.setHeader(
       "Set-Cookie",
-      `${AUTH_COOKIE}=${authToken}; HttpOnly; Path=/; Max-Age=7200; SameSite=Lax${process.env.NODE_ENV === "production" ? "; Secure" : ""}`,
+      `${AUTH_COOKIE}=${authToken}; HttpOnly; Path=/; Max-Age=${AUTH_TOKEN_TTL_SECONDS}; SameSite=Lax${process.env.NODE_ENV === "production" ? "; Secure" : ""}`,
     );
 
     res.json({
