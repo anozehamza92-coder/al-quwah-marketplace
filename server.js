@@ -302,6 +302,11 @@ app.post("/api/login", async (req, res) => {
       });
     }
 
+    // Email addresses are stored in lowercase at registration time.
+    // Normalize login input as well so capitalization or surrounding spaces
+    // do not prevent a valid user from signing in.
+    const normalizedEmail = String(email).trim().toLowerCase();
+
     const user = db
       .prepare(
         `
@@ -310,7 +315,7 @@ app.post("/api/login", async (req, res) => {
         WHERE email = ?
       `,
       )
-      .get(email);
+      .get(normalizedEmail);
 
     if (!user) {
       return res.status(401).json({
