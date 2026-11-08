@@ -12,5 +12,8 @@
     "better-sqlite3": "^13.0.3",
     "express": "^5.2.1",
     "multer": "^2.4.0"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
