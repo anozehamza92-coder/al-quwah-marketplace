@@ -184,15 +184,51 @@ function requireAdmin(req, res, next) {
     });
   }
 
-  if (user.role !== "admin") {
-    return res.status(403).json({
+  try {
+    // Resolve the current account from the database instead of trusting
+    // the role embedded in an older login token.
+    const account = db
+      .prepare("SELECT id, name, email, role FROM users WHERE id = ?")
+      .get(user.id);
+
+    if (!account) {
+      return res.status(403).json({
+        success: false,
+        message: "Administrator access required.",
+      });
+    }
+
+    // Optional deployment-level administrator allowlist. This lets the
+    // designated account administer the marketplace without changing its
+    // existing account or password.
+    const configuredAdminEmail = String(process.env.ADMIN_EMAIL || "")
+      .trim()
+      .toLowerCase();
+    const isConfiguredAdmin =
+      configuredAdminEmail &&
+      String(account.email || "").trim().toLowerCase() === configuredAdminEmail;
+
+    if (account.role !== "admin" && !isConfiguredAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "Administrator access required.",
+      });
+    }
+
+    req.user = {
+      ...user,
+      name: account.name,
+      email: account.email,
+      role: "admin",
+    };
+    next();
+  } catch (error) {
+    console.error("Administrator authorization error:", error);
+    return res.status(500).json({
       success: false,
-      message: "Administrator access required.",
+      message: "Unable to verify administrator access.",
     });
   }
-
-  req.user = user;
-  next();
 }
 
 // ==========================================
