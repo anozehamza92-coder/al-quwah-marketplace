@@ -243,6 +243,31 @@ app.get("/api/health", (req, res) => {
   res.json({ success: true, service: "AL-QUWAH Marketplace", status: "ok", version: process.env.RENDER_GIT_COMMIT || "unknown" });
 });
 
+// Temporary, non-sensitive diagnostic for the signed-in account's admin configuration.
+app.get("/api/admin-access-status", requireLogin, (req, res) => {
+  try {
+    const account = db
+      .prepare("SELECT id, email, role FROM users WHERE id = ?")
+      .get(req.user.id);
+    const configuredAdminEmail = String(process.env.ADMIN_EMAIL || "")
+      .trim()
+      .toLowerCase();
+    res.json({
+      authenticated: true,
+      accountFound: Boolean(account),
+      configuredAdminEmailSet: Boolean(configuredAdminEmail),
+      accountEmailMatches: Boolean(
+        account && configuredAdminEmail &&
+        String(account.email || "").trim().toLowerCase() === configuredAdminEmail
+      ),
+      accountRoleIsAdmin: Boolean(account && account.role === "admin"),
+    });
+  } catch (error) {
+    console.error("Admin access status error:", error);
+    res.status(500).json({ success: false, message: "Unable to check administrator configuration." });
+  }
+});
+
 // ==========================================
 // HOME
 // ==========================================
