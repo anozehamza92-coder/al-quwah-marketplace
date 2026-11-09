@@ -243,17 +243,22 @@ app.get("/api/health", (req, res) => {
   res.json({ success: true, service: "AL-QUWAH Marketplace", status: "ok", version: process.env.RENDER_GIT_COMMIT || "unknown" });
 });
 
-// Temporary, non-sensitive diagnostic for the signed-in account's admin configuration.
-app.get("/api/admin-access-status", requireLogin, (req, res) => {
+// Temporary, non-sensitive diagnostic for the authentication cookie and admin configuration.
+// Intentionally public: it reports only boolean status flags so a missing cookie can be diagnosed.
+app.get("/api/admin-access-status", (req, res) => {
   try {
-    const account = db
-      .prepare("SELECT id, email, role FROM users WHERE id = ?")
-      .get(req.user.id);
+    const token = getAuthToken(req);
+    const user = verifyAuthToken(token);
+    const account = user
+      ? db.prepare("SELECT id, email, role FROM users WHERE id = ?").get(user.id)
+      : null;
     const configuredAdminEmail = String(process.env.ADMIN_EMAIL || "")
       .trim()
       .toLowerCase();
+
     res.json({
-      authenticated: true,
+      cookieReceived: Boolean(token),
+      tokenValid: Boolean(user),
       accountFound: Boolean(account),
       configuredAdminEmailSet: Boolean(configuredAdminEmail),
       accountEmailMatches: Boolean(
